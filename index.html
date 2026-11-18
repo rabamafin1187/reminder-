@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#17131a">
+  <meta name="description" content="毎日の振り返りで、自分の思考と行動を少しずつ整える習慣アプリ。">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <title>Re:Mind — Daily Growth Journal</title>
+  <style>
+    :root{--bg:#120f14;--panel:#1e1921;--panel2:#28212c;--pink:#efb7d0;--pink2:#d98bb2;--text:#f8edf3;--muted:#b9aab5;--line:#493443;--good:#b8dfc8;--bad:#f0a9b9}
+    *{box-sizing:border-box} body{margin:0;background:radial-gradient(ellipse at top,#342333 0,#17121a 42%,#100e13 100%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;min-height:100vh}
+    button,input,textarea{font:inherit} button{cursor:pointer}
+    .app{max-width:720px;margin:auto;padding:calc(16px + env(safe-area-inset-top)) 16px calc(30px + env(safe-area-inset-bottom))}
+    header{display:flex;align-items:center;justify-content:space-between;margin:8px 2px 22px}
+    .brand{display:flex;align-items:center;gap:12px}.logo{width:46px;height:46px;border-radius:15px;background:linear-gradient(145deg,#f4c8dc,#a75e85);display:grid;place-items:center;color:#24151e;font-size:23px;box-shadow:0 8px 24px #d98bb233}
+    h1{font-size:22px;letter-spacing:.4px;margin:0}.sub{font-size:10px;letter-spacing:2px;color:var(--muted);margin-top:3px}
+    .pill{border:1px solid var(--line);border-radius:999px;padding:7px 11px;color:var(--pink);font-size:11px}
+    .hero{padding:22px;border:1px solid #604355;border-radius:23px;background:linear-gradient(135deg,#382638,#211a27 72%);box-shadow:0 15px 40px #0005;margin-bottom:16px}
+    .eyebrow{font-size:11px;letter-spacing:1.5px;color:var(--pink);font-weight:700}.hero h2{font-size:25px;line-height:1.45;margin:10px 0 6px}.hero p{font-size:13px;color:#d5c3ce;line-height:1.7;margin:0}
+    .date-row{display:flex;align-items:center;justify-content:space-between;margin:18px 2px 10px;color:var(--muted);font-size:12px}
+    .progress-card,.card{background:var(--panel);border:1px solid var(--line);border-radius:19px;padding:17px;margin-bottom:13px}
+    .progress-head{display:flex;justify-content:space-between;align-items:center;font-size:13px}.score{font-size:25px;font-weight:800;color:var(--pink)}
+    .track{height:8px;border-radius:9px;background:#3c303c;overflow:hidden;margin:11px 0 7px}.fill{height:100%;background:linear-gradient(90deg,#c978a3,#f1c2d8);border-radius:9px;transition:width .2s}
+    .hint{font-size:11px;color:var(--muted)}
+    .section-title{font-size:16px;margin:5px 2px 12px;display:flex;align-items:center;gap:8px}.section-title:before{content:"";width:4px;height:17px;border-radius:4px;background:var(--pink2)}
+    .check{display:flex;align-items:flex-start;gap:11px;padding:12px 2px;border-bottom:1px solid #382c38;font-size:13px;line-height:1.5}.check:last-child{border:0}.check input{appearance:none;flex:0 0 20px;width:20px;height:20px;margin:0;border:1px solid #8d647c;border-radius:6px;background:#17131a;position:relative}
+    .check input:checked{background:var(--pink2);border-color:var(--pink2)}.check input:checked:after{content:"✓";position:absolute;inset:0;color:#21131c;text-align:center;font-weight:900;line-height:19px}
+    .field{margin:13px 0}.field label{display:block;font-size:12px;color:var(--pink);margin-bottom:7px}.field textarea{width:100%;min-height:76px;resize:vertical;border:1px solid var(--line);border-radius:13px;background:#17131a;color:var(--text);padding:12px;line-height:1.6;outline:none}.field textarea:focus{border-color:var(--pink2)}
+    .moods{display:flex;gap:8px;flex-wrap:wrap}.mood{border:1px solid var(--line);background:#17131a;color:var(--muted);border-radius:999px;padding:9px 13px;font-size:12px}.mood.active{background:#513448;color:#ffe3ef;border-color:var(--pink2)}
+    .btn{border:0;border-radius:13px;padding:13px 16px;font-weight:700;background:linear-gradient(100deg,#e8aeca,#c778a0);color:#24141e;width:100%;margin-top:8px}.btn.secondary{background:#302633;color:var(--pink);border:1px solid var(--line)}.btn.small{width:auto;padding:9px 12px;font-size:11px}
+    nav{display:flex;gap:8px;margin:18px 0}.tab{flex:1;border:1px solid var(--line);background:#1d1820;color:var(--muted);border-radius:12px;padding:11px 5px;font-size:12px}.tab.active{background:#503247;color:#ffe6f0;border-color:#a86b8e}
+    .view{display:none}.view.active{display:block}
+    .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{background:#17131a;border:1px solid var(--line);border-radius:14px;padding:14px}.stat strong{display:block;font-size:24px;color:var(--pink)}.stat span{font-size:11px;color:var(--muted)}
+    .history-item{border:1px solid var(--line);border-radius:14px;padding:13px;margin:9px 0;background:#17131a}.history-item strong{font-size:13px}.history-item p{font-size:11px;color:var(--muted);margin:6px 0 0;line-height:1.6}
+    .empty{color:var(--muted);font-size:12px;text-align:center;padding:24px 10px}.footer{text-align:center;color:#8f7d89;font-size:10px;line-height:1.7;margin:22px 8px}
+    .toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#f0c4d9;color:#24141e;padding:11px 16px;border-radius:999px;font-size:12px;font-weight:700;opacity:0;pointer-events:none;transition:.2s;white-space:nowrap}.toast.show{opacity:1}
+    @media(min-width:600px){.app{padding-top:30px}.hero h2{font-size:30px}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand"><div class="logo">♡</div><div><h1>Re:Mind</h1><div class="sub">DAILY GROWTH JOURNAL</div></div></div>
+    <div class="pill" id="streak">0日継続</div>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow">A LITTLE BETTER, EVERY DAY</div>
+    <h2>今日の自分と、<br>ちゃんと向き合う。</h2>
+    <p>自分を責めるためじゃなく、明日の行動を少し変えるための記録。</p>
+  </section>
+
+  <nav>
+    <button class="tab active" data-view="today">今日の記録</button>
+    <button class="tab" data-view="history">振り返り</button>
+    <button class="tab" data-view="growth">成長レポート</button>
+  </nav>
+
+  <main id="today" class="view active">
+    <div class="date-row"><span id="todayDate"></span><span>DAILY CHECK-IN</span></div>
+    <section class="progress-card">
+      <div class="progress-head"><strong>今日の達成度</strong><span class="score" id="score">0/18</span></div>
+      <div class="track"><div class="fill" id="bar" style="width:0%"></div></div>
+      <div class="hint" id="progressHint">一つずつで大丈夫。できたことを積み重ねよう。</div>
+    </section>
+    <div id="checkSections"></div>
+    <section class="card">
+      <div class="section-title">今日の自己分析</div>
+      <div id="journalFields"></div>
+      <div class="field"><label>今日の自分の状態</label><div class="moods" id="moods">
+        <button class="mood" data-mood="良かった">良かった</button><button class="mood active" data-mood="普通">普通</button><button class="mood" data-mood="反省点が多かった">反省点が多かった</button>
+      </div></div>
+      <button class="btn" id="saveBtn">今日の記録を保存</button>
+      <button class="btn secondary" id="exportBtn">記録をテキストで書き出す</button>
+    </section>
+  </main>
+
+  <main id="history" class="view">
+    <section class="card"><div class="section-title">過去の記録</div><div id="historyList"></div></section>
+  </main>
+
+  <main id="growth" class="view">
+    <section class="card">
+      <div class="section-title">あなたの積み重ね</div>
+      <div class="stats">
+        <div class="stat"><strong id="daysStat">0</strong><span>記録した日数</span></div>
+        <div class="stat"><strong id="avgStat">0%</strong><span>平均チェック達成率</span></div>
+        <div class="stat"><strong id="bestStat">0</strong><span>最もチェックできた項目</span></div>
+        <div class="stat"><strong id="streakStat">0</strong><span>連続記録日数</span></div>
+      </div>
+      <p class="hint" style="line-height:1.7;margin-top:15px">数字は自分を評価するためではなく、変化を見つけるための目安。チェックできなかった日も、次の日からまた始められるよ。</p>
+    </section>
+    <section class="card"><div class="section-title">直近7日間</div><div id="weekly"></div></section>
+  </main>
+  <div class="footer">YOUR PACE, YOUR GROWTH.<br>記録はこの端末のブラウザ内に保存されます。大切な記録は定期的に書き出してください。</div>
+</div>
+<div class="toast" id="toast">保存しました ♡</div>
+<script>
+const sections=[
+ {title:"朝：今日の意識",items:["自分の都合だけで判断しない","相手の立場を一度考えてから行動する","相手には断る自由があると理解する"]},
+ {title:"日中：行動チェック",items:["相手の話を最後まで聞く","同じ要求を何度も繰り返さない","自分の我慢を相手に押し付けない","相手の嫌がることを尊重する","自分の感情を相手の責任にしない","見返りを求めずに親切にする"]},
+ {title:"夜：自己分析",items:["自分の非を相手の非で正当化しなかった","相手が受けた影響を考えた","反省を次の行動につなげた"]}
+];
+const prompts=["今日、自分の都合を優先してしまった場面は？","そのとき相手はどう感じたと思う？","今日できたこと・成長したことは？","明日、一つだけ変える行動は？"];
+const total=sections.reduce((n,s)=>n+s.items.length,0);
+const KEY="remind_entries_v1"; let entries=load(); let currentMood="普通";
+const today=localDate();
+function localDate(d=new Date()){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0");return `${y}-${m}-${day}`}
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){return {}}}
+function persist(){localStorage.setItem(KEY,JSON.stringify(entries))}
+function blank(){return {checks:{},notes:["","","",""],mood:"普通",updated:new Date().toISOString()}}
+function entry(){return entries[today]||(entries[today]=blank())}
+function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function renderChecks(){const root=document.getElementById("checkSections");root.innerHTML="";sections.forEach((s,si)=>{const box=document.createElement("section");box.className="card";box.innerHTML=`<div class="section-title">${s.title}</div>`;s.items.forEach((item,ii)=>{const id=`${si}-${ii}`,row=document.createElement("label");row.className="check";row.innerHTML=`<input type="checkbox" data-id="${id}"><span>${item}</span>`;box.appendChild(row)});root.appendChild(box)})}
+function renderJournal(){document.getElementById("journalFields").innerHTML=prompts.map((p,i)=>`<div class="field"><label>${i+1}. ${p}</label><textarea data-note="${i}" placeholder="正直に書いてみよう…"></textarea></div>`).join("")}
+function count(e){return Object.values(e.checks||{}).filter(Boolean).length}
+function refresh(){const e=entry();document.getElementById("todayDate").textContent=new Date().toLocaleDateString("ja-JP",{year:"numeric",month:"long",day:"numeric",weekday:"long"});document.querySelectorAll("[data-id]").forEach(el=>el.checked=!!e.checks[el.dataset.id]);document.querySelectorAll("[data-note]").forEach(el=>el.value=e.notes[+el.dataset.note]||"");currentMood=e.mood||"普通";document.querySelectorAll(".mood").forEach(b=>b.classList.toggle("active",b.dataset.mood===currentMood));updateProgress();updateStats()}
+function updateProgress(){const n=count(entry());document.getElementById("score").textContent=`${n}/${total}`;document.getElementById("bar").style.width=`${n/total*100}%`;document.getElementById("progressHint").textContent=n===total?"全部確認できたね。明日も続けよう。":n===0?"まずは一つずつ。焦らなくて大丈夫。":`${total-n}項目。できたことを積み重ねよう。`}
+function saveCurrent(){const e=entry();document.querySelectorAll("[data-id]").forEach(el=>e.checks[el.dataset.id]=el.checked);document.querySelectorAll("[data-note]").forEach(el=>e.notes[+el.dataset.note]=el.value);e.mood=currentMood;e.updated=new Date().toISOString();persist();updateStats();toast("今日の記録を保存しました ♡")}
+function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1800)}
+function streak(){let n=0,d=new Date();while(true){const k=localDate(d);if(!entries[k])break;n++;d.setDate(d.getDate()-1)}return n}
+function updateStats(){const dates=Object.keys(entries).sort();const vals=dates.map(k=>count(entries[k]));document.getElementById("streak").textContent=streak()+"日継続";document.getElementById("daysStat").textContent=dates.length;document.getElementById("avgStat").textContent=dates.length?Math.round(vals.reduce((a,b)=>a+b,0)/(dates.length*total)*100)+"%":"0%";document.getElementById("bestStat").textContent=vals.length?Math.max(...vals):0;document.getElementById("streakStat").textContent=streak();document.getElementById("weekly").innerHTML=Array.from({length:7},(_,i)=>{const d=new Date();d.setDate(d.getDate()-(6-i));const k=localDate(d),e=entries[k],n=e?count(e):0;return `<div style="display:flex;align-items:center;gap:10px;margin:12px 0;font-size:11px"><span style="width:75px;color:var(--muted)">${d.toLocaleDateString("ja-JP",{month:"numeric",day:"numeric"})}</span><div class="track" style="flex:1;margin:0"><div class="fill" style="width:${n/total*100}%"></div></div><span style="width:38px;text-align:right">${e?n+"/"+total:"—"}</span></div>`}).join("");renderHistory()}
+function renderHistory(){const list=document.getElementById("historyList"),dates=Object.keys(entries).sort().reverse();if(!dates.length){list.innerHTML='<div class="empty">まだ記録がありません。今日から始めよう。</div>';return}list.innerHTML=dates.map(k=>{const e=entries[k],note=(e.notes||[]).filter(Boolean)[0]||"振り返りメモはありません";return `<div class="history-item"><strong>${k}　${count(e)}/${total}項目 · ${escapeHTML(e.mood||"普通")}</strong><p>${escapeHTML(note)}</p></div>`}).join("")}
+function exportText(){saveCurrent();const text=Object.keys(entries).sort().reverse().map(k=>{const e=entries[k];return `${k}｜${count(e)}/${total}｜${e.mood}\n${sections.map((s,si)=>s.title+"\n"+s.items.map((x,ii)=>(e.checks[`${si}-${ii}`]?"☑ ":"☐ ")+x).join("\n")).join("\n")}\n${prompts.map((p,i)=>p+"\n"+(e.notes[i]||"")).join("\n\n")}`}).join("\n\n====================\n\n");const blob=new Blob([text],{type:"text/plain;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="ReMind-記録.txt";a.click();URL.revokeObjectURL(url)}
+renderChecks();renderJournal();refresh();
+document.addEventListener("change",e=>{if(e.target.matches("[data-id]")){entry().checks[e.target.dataset.id]=e.target.checked;updateProgress();persist()}});
+document.addEventListener("input",e=>{if(e.target.matches("[data-note]")){entry().notes[+e.target.dataset.note]=e.target.value;persist()}});
+document.getElementById("moods").addEventListener("click",e=>{const b=e.target.closest("[data-mood]");if(!b)return;currentMood=b.dataset.mood;entry().mood=currentMood;document.querySelectorAll(".mood").forEach(x=>x.classList.toggle("active",x===b));persist()});
+document.getElementById("saveBtn").addEventListener("click",saveCurrent);document.getElementById("exportBtn").addEventListener("click",exportText);
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===b.dataset.view));if(b.dataset.view==="growth")updateStats()}));
+if("serviceWorker" in navigator && location.protocol!=="file:"){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}))}
+</script>
+</body></html>
